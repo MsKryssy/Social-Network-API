@@ -11,7 +11,7 @@ module.exports = {
     },
     async getSingleUser(req, res) {
         try {
-            const user = await User.findOne({ _id: req.params.userId }).select('-_v');
+            const user = await User.findOne({ _id: req.params.userId }).select('-__v');
             if (!user) {
                 return res.status(404).json({ message: 'We could not find a user with that ID' });
             }
