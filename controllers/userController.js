@@ -1,4 +1,4 @@
-const { User, Thought } = require('../models');
+const { User } = require('../models');
 
 module.exports = {
     async getUsers (req, res) {
@@ -11,7 +11,9 @@ module.exports = {
     },
     async getSingleUser(req, res) {
         try {
-            const user = await User.findOne({ _id: req.params.userId }).select('-__v');
+            const user = await User.findOne({ _id: req.params.userId })
+            .populate('thought').populate('friends')
+            .select('-__v');
             if (!user) {
                 return res.status(404).json({ message: 'We could not find a user with that ID' });
             }
@@ -26,12 +28,13 @@ module.exports = {
             if (!user) {
                 return res.status(404).json({ message: 'We could not find a user with that ID' });
             }
-            res.json(user)
+            res.json({ message: 'User has been deleted' })
         } catch(err) {
             res.status(500).json(err);
         }
     },
     async createUser(req, res) {
+        console.log(req.body);
         try {
             const user = await User.create(req.body);
             res.json(user);
@@ -44,7 +47,7 @@ module.exports = {
             const user = await User.findOneAndUpdate(
                 { _id: req.params.userId },
                 { $set: req.body },
-                { runValidator: true, new: true }
+                { new: true }
             );
             if (!user) {
                 res.status(404).json({ message: 'We could not find a user with that ID'});
@@ -58,7 +61,7 @@ module.exports = {
             const user = await User.findOneAndUpdate(
                 { _id: req.params.userId },
                 { $addToSet: { friends: req.params.friendId } },
-                { runValidator: true, new: true }
+                { new: true }
             );
             if (!user) {
                 return res.status(404).json({ message: 'We could not find a user with that ID' })
@@ -78,7 +81,7 @@ module.exports = {
             if (!user) {
                 return res.status(404).json({ message: 'User does not exist'});
             }
-            res.json(user)
+            res.json({ message: 'Friend has been removed' })
         } catch (err) {
             res.status(500).json(err);
         }
