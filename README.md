@@ -25,3 +25,5 @@ Open the terminal and run the server in order to get the server link. Once you o
 Please contact me via [Github](https://github.com/MsKryssy/Social-Media-API) if you have any questions regarding this application or its usage.
 
 # Walkthrough Video
+
+Watch the walkthrough video here: [Screencastify](https://watch.screencastify.com/v/odaNFhPzMP6XTt0vU8QZ)
