@@ -36,6 +36,15 @@ module.exports = {
         try {
             const thought = await Thought.create(req.body);
             res.json(thought);
+            const user = await User.findOneAndUpdate(
+                { _id: req.body.userId },
+                { $push: { thought: thought.id } },
+                { new: true }
+            );
+
+            if (!user) {
+                return res.status(404).json({ message: 'We could not find user with that ID' });
+            } response.json(thought);
         } catch (err) {
             res.status(500).json(err);
         }
